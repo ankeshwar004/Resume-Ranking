@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Virtual Environment
+venv/
+env/
+.venv/
+
+# VS Code
+.vscode/
+
+# Mac/Linux
+.DS_Store
+
+# Kaggle/Colab temporary files
+/tmp/
+/kaggle/working/
+
+# Model files
+models/
+*.pt
+*.bin
+*.safetensors
+*.keras
+*.h5
+*.pickle
+*.pkl
+
+# Embeddings / processed data
+data/
+
+# Outputs
+outputs/
+
+# HuggingFace cache
+.cache/
+huggingface/
+
+# Logs
+*.log

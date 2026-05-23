@@ -1,0 +1,16 @@
+pandas
+numpy
+matplotlib
+seaborn
+scikit-learn
+scipy
+xgboost
+spacy
+gensim
+torch
+transformers
+sentence-transformers
+datasets
+kagglehub
+tqdm
+jupyter
