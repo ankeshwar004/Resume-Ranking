@@ -34,3 +34,4 @@ tech_aliases = {
     "python": ["py", "python language"],
     "sql":["mysql","postgresql","structured query language"]
 }
+
