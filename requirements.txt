@@ -10,7 +10,4 @@ gensim
 torch
 transformers
 sentence-transformers
-datasets
-kagglehub
 tqdm
-jupyter

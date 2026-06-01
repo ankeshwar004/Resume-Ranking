@@ -1,3 +1,5 @@
+import numpy as np
+
 def skill_overlap(resume_texts, jd_texts, all_skills):
     rows = []
 

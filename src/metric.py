@@ -1,3 +1,6 @@
+from scipy.stats import spearmanr
+from sklearn.metrics import ndcg_score
+import numpy as np
 
 
 
@@ -100,12 +103,6 @@ def model_evaluation(scores,test_df,col_name='job_description_text'):
     
   map_score=evaluate_per_jd(test_df,scores,col_name,
                              lambda group: map_metric(group,1))  
-
-  print("Spearman:", spearman_score)
-  print("Top-3 Accuracy:", topk_score)
-  print("NDCG:", ndcg_val)
-  print("MRR:", mrr_score)
-  print("MAP:", map_score)
 
 
   return {
