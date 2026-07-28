@@ -2,7 +2,7 @@ import config
 import torch
 
 
-from chunking import chunk_text
+from src.chunking import chunk_text
 
 
 
@@ -19,7 +19,7 @@ def score_chunk_pairs(model, resume, jd):
     return pairs
 
 
-def top_chunk_score(model, resume, jd,k):
+def top_chunk_score(model, resume, jd,top_k):
     pairs = score_chunk_pairs(model, resume, jd)
     
     resume_chunks = [pair[0] for pair in pairs]
@@ -35,14 +35,14 @@ def top_chunk_score(model, resume, jd,k):
     output=model.model(**inputs)
     scores=output.logits.squeeze(-1)
     
-    k=min(k, len(scores))
-    top_k_scores= torch.topk(scores, k).values
+    top_k=min(top_k, len(scores))
+    top_k_scores= torch.topk(scores, top_k).values
     return top_k_scores.mean()
 
 
 def compute_batch_scores(model, resumes, jds):
     scores=[]
     for resume, jd in zip(resumes, jds):
-        score=top_chunk_score(model, resume, jd, k=3)
+        score=top_chunk_score(model, resume, jd, top_k=3)
         scores.append(score)
     return torch.stack(scores)
