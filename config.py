@@ -1,4 +1,5 @@
 import os
+import torch
 from pathlib import Path
 
 
@@ -27,6 +28,7 @@ HD_MODEL_DIR = os.path.join(MODELS_DIR, "hard_negative")
 
 RESULTS_DIR = os.path.join(BASE_DIR, "results")
 
+device = "cuda" if torch.cuda.is_available() else "cpu"
 
 label_to_score={0:0,1:0.5,2:1.0}
 
@@ -45,4 +47,4 @@ MAX_RESUME_CHUNKS = 6
 
 COMMON_CHUNK_SIZE=200
 COMMON_OVERLAP=50
-COMMON_MAX_CHUNKS=10
+MAX_COMMON_CHUNKS=10
