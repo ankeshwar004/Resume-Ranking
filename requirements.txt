@@ -6,7 +6,6 @@ scikit-learn
 scipy
 xgboost
 spacy
-gensim
 torch
 transformers
 sentence-transformers
