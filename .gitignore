@@ -35,6 +35,9 @@ models/
 # Embeddings / processed data
 data/
 
+imp/
+CLAUDE.md
+
 # Outputs
 outputs/
 

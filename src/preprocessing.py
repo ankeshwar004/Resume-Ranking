@@ -18,7 +18,6 @@ def extract_experience(text,is_resume=True):
 
 
 
-
 def normalize_skills(skill):
     skill = str(skill).lower().strip()
     # Replace separators with space
@@ -30,8 +29,10 @@ def normalize_skills(skill):
 
     return skill.strip()
 
+
 def split_skills(skill):
     return re.split(r'\bor\b|/|,|and|___|__', skill)
+
 
 def extract_skills(skill):
     raw = str(skill).lower()
@@ -45,6 +46,7 @@ def extract_skills(skill):
 
     return cleaned
 
+
 def is_valid_skills(skill):
     if len(skill) < 2:
         return False
@@ -53,6 +55,7 @@ def is_valid_skills(skill):
     if skill.isdigit():
         return False
     return True
+
 
 
 def extract_skills_from_row(df,col):
