@@ -26,7 +26,11 @@ def top_chunk_score(model, resume, jd,k):
     jd_chunks = [pair[1] for pair in pairs]
     
     inputs=model.tokenizer(resume_chunks, jd_chunks,padding=True,truncation=True,return_tensors="pt")
-    inputs = {key: value.to(config.device) for key, value in inputs.items()}
+
+    for k, v in inputs.items():
+        if torch.is_tensor(v):
+            inputs[k] = v.to(config.device)
+
     
     output=model.model(**inputs)
     scores=output.logits.squeeze(-1)
