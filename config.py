@@ -32,6 +32,7 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 
 label_to_score={0:0,1:0.5,2:1.0}
 
+BATCH_SIZE=64
 BASELINE_BATCH_SIZE=64
 CHUNK_BATCH_SIZE=8
 
