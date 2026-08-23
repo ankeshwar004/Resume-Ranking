@@ -3,8 +3,7 @@ import tqdm
 import torch
 import torch.nn.functional as F
 
-from src.chunking import chunk_text
-from src.metric import model_evaluation
+from src.chunking import get_resume_chunks,get_jd_chunks
 
 
 def cosent_loss(resume_emb, jd_emb, labels):
@@ -40,15 +39,15 @@ def encode_chunks(model,chunks):
     return output["sentence_embedding"]
 
 
-def get_jd_embedding(model,jd):
-    chunks=chunk_text(model,jd,chunk_size=config.COMMON_CHUNK_SIZE,overlap=config.COMMON_OVERLAP,max_chunks=config.MAX_COMMON_CHUNKS)
+def get_jd_embedding(model,jd,jd_chunk_map={}):
+    chunks=get_jd_chunks(model,jd,jd_chunk_map)
     embeddings=encode_chunks(model,chunks)
     embeddings=embeddings.mean(dim=0)
     return F.normalize(embeddings, p=2, dim=0)
 
 
-def get_resume_embedding(model,resume,jd_embedding=None):
-    chunks=chunk_text(model,resume,chunk_size=config.COMMON_CHUNK_SIZE,overlap=config.COMMON_OVERLAP,max_chunks=config.MAX_COMMON_CHUNKS)
+def get_resume_embedding(model,resume,jd_embedding=None,resume_chunk_map={}):
+    chunks=get_resume_chunks(model,resume,resume_chunk_map)
     embeddings=encode_chunks(model,chunks)
     embeddings=F.normalize(embeddings, p=2, dim=1)
     
@@ -61,13 +60,13 @@ def get_resume_embedding(model,resume,jd_embedding=None):
     return embeddings[best_idx]
 
 
-def compute_batch_embeddings(model,resumes,jds):
+def compute_batch_embeddings(model,resumes,jds,resume_chunk_map={},jd_chunk_map={}):
     resume_embs=[]
     jd_embs=[]
     
     for resume,jd in zip(resumes,jds):
-        jd_emb=get_jd_embedding(model,jd)
-        resume_emb=get_resume_embedding(model,resume,jd_emb)
+        jd_emb=get_jd_embedding(model,jd,jd_chunk_map)
+        resume_emb=get_resume_embedding(model,resume,jd_emb,resume_chunk_map)
         
         resume_embs.append(resume_emb)
         jd_embs.append(jd_emb)

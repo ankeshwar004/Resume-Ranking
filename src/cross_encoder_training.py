@@ -2,13 +2,13 @@ import config
 import torch
 
 
-from src.chunking import chunk_text
+from src.chunking import get_resume_chunks,get_jd_chunks
 
 
 
-def score_chunk_pairs(model, resume, jd):
-    resume_chunks = chunk_text(model,resume,chunk_size=config.RESUME_CHUNK_SIZE,overlap=config.RESUME_OVERLAP,max_chunks=config.MAX_RESUME_CHUNKS)
-    jd_chunks = chunk_text(model,jd,chunk_size=config.JD_CHUNK_SIZE,overlap=config.JD_OVERLAP,max_chunks=config.MAX_JD_CHUNKS)
+def score_chunk_pairs(model, resume, jd, resume_chunk_map={}, jd_chunk_map={}):
+    resume_chunks = get_resume_chunks(model,resume,resume_chunk_map)
+    jd_chunks = get_jd_chunks(model,jd,jd_chunk_map)
     
     pairs=[]
     
@@ -19,8 +19,8 @@ def score_chunk_pairs(model, resume, jd):
     return pairs
 
 
-def top_chunk_score(model, resume, jd,top_k):
-    pairs = score_chunk_pairs(model, resume, jd)
+def top_chunk_score(model, resume, jd,top_k, resume_chunk_map={}, jd_chunk_map={}):
+    pairs = score_chunk_pairs(model, resume, jd, resume_chunk_map, jd_chunk_map)
     
     resume_chunks = [pair[0] for pair in pairs]
     jd_chunks = [pair[1] for pair in pairs]
@@ -40,9 +40,10 @@ def top_chunk_score(model, resume, jd,top_k):
     return top_k_scores.mean()
 
 
-def compute_batch_scores(model, resumes, jds):
+def compute_batch_scores(model, resumes, jds, resume_chunk_map={}, jd_chunk_map={}):
     scores=[]
+    top_k=3
     for resume, jd in zip(resumes, jds):
-        score=top_chunk_score(model, resume, jd, top_k=3)
+        score=top_chunk_score(model, resume, jd, top_k, resume_chunk_map, jd_chunk_map)
         scores.append(score)
     return torch.stack(scores)
