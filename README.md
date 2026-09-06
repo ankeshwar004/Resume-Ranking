@@ -200,25 +200,16 @@ All metrics were computed **per Job Description group** and then averaged — no
 
 All models below are evaluated by scoring all labeled (JD, resume) pairs in the test set, grouped by JD.
 
-| Model                          | NDCG@10 | MAP     | MRR     | Top-3 Acc |
-| ------------------------------ | ------- | ------- | ------- | --------- |
-| TF-IDF + XGBRanker             | 0.6463  | 0.7505  | 0.8462  | 0.9642    |
-| Bi-Encoder (CoSENTLoss)        | 0.6411  | 0.7432  | 0.7895  | 0.9642    |
-| Bi-Encoder + Hard Negatives    | *below baseline* | — | — | — |
-| Cross-Encoder (MSE loss)       | *below baseline* | — | — | — |
+| | Approach                  |      NDCG |       MAP |             MRR |    Spearman |       Top-K |
+| ------------------------- | --------: | --------: | --------------: | ----------: | ----------: |
+| TF-IDF                    |     0.637 |     0.730 |           0.813 |       0.298 |       1.000 |
+| Bi-Encoder                |     0.670 |     0.764 |           0.837 |       0.337 |       1.000 |
+| Bi-Encoder + FT           |     0.647 |     0.748 |           0.773 |       0.392 |       1.000 |
+| **Bi-Encoder + Chunking** | **0.701** | **0.830** |       **0.857** |   **0.529** |       0.964 |
+| Cross-Encoder + Chunking  |     0.663 |     0.752 |           0.840 |       0.389 |       0.964 |
+| **2-Stage Chunked**       | **0.853** | **0.870** | **0.896–0.925** |       0.126 |   **1.000** |
+| 2-Stage + Hard Negatives  |     0.722 |     0.827 |     0.835–0.883 | 0.040–0.055 | 0.833–0.917 |
 
-> Hard Negative Bi-Encoder and Cross-Encoder both underperformed the baseline Bi-Encoder. See [Key Findings](#key-findings) for root cause analysis.
-
----
-
-### Two-Stage Retrieval — Global Retrieval Setting (Test Set)
-
-Bi-Encoder performs semantic search across all test resumes. Only retrieved resumes with known labels for that JD are scored. This simulates real-world retrieval from a large pool.
-
-| Stage                         | NDCG@10 | MAP    | MRR    |
-| ----------------------------- | ------- | ------ | ------ |
-| Bi-Encoder (Stage 1, top-20)  | 0.8878  | 0.8961 | 0.9380 |
-| + Cross-Encoder Reranking     | *no significant gain* | — | — |
 
 > The higher NDCG in this setting vs. pairwise evaluation reflects the different evaluation protocol (global retrieval vs. scoring all labeled pairs), not a change in model capability. Cross-Encoder reranking did not meaningfully improve over the Bi-Encoder retrieval scores.
 
