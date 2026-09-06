@@ -196,22 +196,21 @@ All metrics were computed **per Job Description group** and then averaged — no
 
 ## Results
 
-### Pairwise Evaluation (Test Set)
 
 All models below are evaluated by scoring all labeled (JD, resume) pairs in the test set, grouped by JD.
+## 📊 Model Performance Comparison
 
-| | Approach                  |      NDCG |       MAP |             MRR |    Spearman |       Top-K |
-| ------------------------- | --------: | --------: | --------------: | ----------: | ----------: |
-| TF-IDF                    |     0.637 |     0.730 |           0.813 |       0.298 |       1.000 |
-| Bi-Encoder                |     0.670 |     0.764 |           0.837 |       0.337 |       1.000 |
-| Bi-Encoder + FT           |     0.647 |     0.748 |           0.773 |       0.392 |       1.000 |
-| **Bi-Encoder + Chunking** | **0.701** | **0.830** |       **0.857** |   **0.529** |       0.964 |
-| Cross-Encoder + Chunking  |     0.663 |     0.752 |           0.840 |       0.389 |       0.964 |
-| **2-Stage Chunked**       | **0.853** | **0.870** | **0.896–0.925** |       0.126 |   **1.000** |
-| 2-Stage + Hard Negatives  |     0.722 |     0.827 |     0.835–0.883 | 0.040–0.055 | 0.833–0.917 |
+The following table compares different resume ranking approaches using **NDCG**, **MAP**, **MRR**, **Spearman Correlation**, and **Top-K Retrieval Accuracy**.
 
-
-> The higher NDCG in this setting vs. pairwise evaluation reflects the different evaluation protocol (global retrieval vs. scoring all labeled pairs), not a change in model capability. Cross-Encoder reranking did not meaningfully improve over the Bi-Encoder retrieval scores.
+| Approach | NDCG | MAP | MRR | Spearman | Top-K |
+|---|---:|---:|---:|---:|---:|
+| TF-IDF | 0.637 | 0.730 | 0.813 | 0.298 | 1.000 |
+| Bi-Encoder | 0.670 | 0.764 | 0.837 | 0.337 | 1.000 |
+| Bi-Encoder + Fine-Tuning | 0.647 | 0.748 | 0.773 | 0.392 | 1.000 |
+| **Bi-Encoder + Chunking** | **0.701** | **0.830** | **0.857** | **0.529** | 0.964 |
+| Cross-Encoder + Chunking | 0.663 | 0.752 | 0.840 | 0.389 | 0.964 |
+| **🏆 2-Stage Chunked** | **0.853** | **0.870** | **0.896–0.925** | 0.126 | **1.000** |
+| 2-Stage + Hard Negatives | 0.722 | 0.827 | 0.835–0.883 | 0.040–0.055 | 0.833–0.917 |
 
 ---
 
@@ -239,7 +238,7 @@ The TF-IDF + XGBRanker baseline was competitive with the neural models on NDCG a
 
 ## Final Model
 
-**Fine-Tuned Bi-Encoder (CoSENTLoss, no hard negatives)**
+**Fine-Tuned Bi-Encoder with chunking (CoSENTLoss, no hard negatives)**
 
 Selected for:
 - Best ranking performance among transformer-based models
